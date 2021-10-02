@@ -1,7 +1,7 @@
-﻿#include "AComboBox.h"
+#include "AComboBox.h"
 #include <QGraphicsDropShadowEffect>
 #include <qboxlayout.h>
-#include <Tool/Neumorphism.h>
+#include <QNeumorphism/QNeumorphism.h>
 
 ComboBox::ComboBox(const int &def, const QList<QString> &list)
     :   combo(new MyComboBox)
@@ -23,11 +23,7 @@ ComboBox::ComboBox(const int &def, const QList<QString> &list)
         emit valueChange(index);
     });
 
-    Neumorphism *localNeumorphism = new Neumorphism;
-    localNeumorphism->setDistance(2);
-    localNeumorphism->setBlurRadius(5);
-    localNeumorphism->setStrength(1.0);
-    setGraphicsEffect(localNeumorphism);
+    setGraphicsEffect(new QNeumorphism(5,2,1.0));
 }
 
 void ComboBox::clear()

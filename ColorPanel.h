@@ -27,6 +27,7 @@ public:
     Control binary;
     PickerIcon btPicker;
     ColorPickor colorPickor;
+    bool ignoreSignal;
 public:
     void setColor(QColor color);
 private:
@@ -39,7 +40,7 @@ private:
     void setColorFromString();
 signals:
     void colorChanged(QColor);
-public slots:
+
 };
 
 #endif // COLORPANEL_H

@@ -3,7 +3,19 @@
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QLabel>
-#include  <QDebug>
+
+QList<QColor> ColorTools::recentColors { (QColor(192,0,0)),
+                                        (QColor(255,0,0)),
+                                        (QColor(255,192,0)),
+                                        (QColor(255,255,0)),
+                                        (QColor(146,208,80)),
+                                        (QColor(0,176,80)),
+                                        (QColor(0,176,240)),
+                                        (QColor(0,112,192)),
+                                        (QColor(0,32,96)),
+                                        (QColor(112,48,160))
+                                        };
+
 ColorTools::ColorTools(QWidget *parent)
     : QWidget(parent)
 {
@@ -19,9 +31,9 @@ void ColorTools::createUI()
 
     QHBoxLayout *h=new QHBoxLayout;
     v->addLayout(h);
-    for(int i=0;i<recentColor.size();i++){
-       h->addWidget(recentColor[i]);
-       connect(recentColor[i],&ColorBlock::chosed,this,&ColorTools::handleColor);
+    for(int i=0;i<recentColorBlock.size();i++){
+       h->addWidget(recentColorBlock[i]);
+       connect(recentColorBlock[i],&ColorBlock::chosed,this,&ColorTools::handleColor);
     }
     v->addWidget(new QLabel("常用颜色"));
 
@@ -35,17 +47,9 @@ void ColorTools::createUI()
 
 void ColorTools::createColor()
 {
-    recentColor.push_back(new ColorBlock(QColor(192,0,0)));
-    recentColor.push_back(new ColorBlock(QColor(255,0,0)));
-    recentColor.push_back(new ColorBlock(QColor(255,192,0)));
-    recentColor.push_back(new ColorBlock(QColor(255,255,0)));
-    recentColor.push_back(new ColorBlock(QColor(146,208,80)));
-    recentColor.push_back(new ColorBlock(QColor(0,176,80)));
-    recentColor.push_back(new ColorBlock(QColor(0,176,240)));
-    recentColor.push_back(new ColorBlock(QColor(0,112,192)));
-    recentColor.push_back(new ColorBlock(QColor(0,32,96)));
-    recentColor.push_back(new ColorBlock(QColor(112,48,160)));
-
+    for(auto&color:recentColors){
+        recentColorBlock.push_back(new ColorBlock(color));
+    }
     colors.push_back(new ColorBlock(QColor(0,0,0)));
     colors.push_back(new ColorBlock(QColor(41,36,33)));
     colors.push_back(new ColorBlock(QColor(128,138,135)));
@@ -126,15 +130,23 @@ void ColorTools::createColor()
     });
 }
 
-void ColorTools::handleColor(QColor color)
+void ColorTools::addRecentColor(QColor color)
 {
-    int key=recentColor.size()-1;
-    while(key>=0&&recentColor[key]->color!=color) key--;
+    int key=recentColors.size()-1;
+    while(key>=0&&recentColors[key]!=color) key--;
     if(key<0)
         key=0;
-    for(int i=key;i<recentColor.size()-1;i++)
-        recentColor[i]->setColor(recentColor[i+1]->color);
-    recentColor.back()->setColor(color);
+    for(int i=key;i<recentColors.size()-1;i++){
+        recentColors[i]=recentColors[i+1];
+        recentColorBlock[i]->setColor(recentColorBlock[i+1]->color);
+    }
+    recentColors.back()=color;
+    recentColorBlock.back()->setColor(color);
+}
+
+void ColorTools::handleColor(QColor color)
+{
+    addRecentColor(color);
     emit colorChanged(color);
 }
 

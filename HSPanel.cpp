@@ -1,6 +1,6 @@
 ﻿#include "HSPanel.h"
 #include <QPainter>
-#include <Tool/Neumorphism.h>
+#include <QNeumorphism/QNeumorphism.h>
 
 HSPanel::HSPanel(QWidget *parent)
     : QWidget(parent)
@@ -8,7 +8,7 @@ HSPanel::HSPanel(QWidget *parent)
     , P_HSL(":/Resource/HSL.png")
 {
     setFixedSize(255,255);
-    setGraphicsEffect(new Neumorphism);
+    setGraphicsEffect(new QNeumorphism);
 
 }
 

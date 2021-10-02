@@ -1,9 +1,9 @@
-﻿#include "ASpinSlider.h"
+#include "ASpinSlider.h"
 #include <QCoreApplication>
 #include <QHBoxLayout>
 #include <math.h>
 #include <QDoubleValidator>
-#include <Tool/Neumorphism.h>
+#include <QNeumorphism/QNeumorphism.h>
 #include <QEvent>
 SpinSlider::SpinSlider(const double &value, const double &min, const double &max, const int &precision)
     :   Adjuster ()
@@ -55,9 +55,9 @@ void SpinSlider::setEnabled(bool enable)
 
 void SpinSlider::setValue(const QVariant &v)
 {
-    if(!slider->isEnabled())
-        return ;
     int value=static_cast<int>(round(v.toDouble()*precision));
+    if(!slider->isEnabled()||slider->value()==value)
+        return ;
     if(value>=slider->minimum()&&value<=slider->maximum()){
         slider->setValue(value);   
     }
@@ -84,11 +84,7 @@ void SpinSlider::sub()
 SSlider::SSlider(Qt::Orientation s)
     :
     QSlider(s){
-    Neumorphism *shadow=new Neumorphism;
-    setGraphicsEffect(shadow);
-    shadow->setStrength(0.5);
-    shadow->setDistance(4);
-    shadow->setBlurRadius(10);
+    setGraphicsEffect(new QNeumorphism(10,4,0.5));
     setStyleSheet(
                 //滑条样式
                 "QSlider::groove:horizontal{"

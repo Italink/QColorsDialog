@@ -2,13 +2,13 @@
 
 #include <QPainter>
 
-#include <Tool/Neumorphism.h>
+#include <QNeumorphism/QNeumorphism.h>
 
 ColorCompare::ColorCompare(QWidget *parent)
     : QWidget(parent)
 {
     setFixedSize(80,20);
-    setGraphicsEffect(new Neumorphism);
+    setGraphicsEffect(new QNeumorphism);
 }
 
 QColor ColorCompare::getPre() const

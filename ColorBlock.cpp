@@ -6,7 +6,7 @@ ColorBlock::ColorBlock(QColor c,QWidget *parent)
     : QWidget(parent)
     , color(c)
     , animation(this,"geometry")
-    , shadow(new Neumorphism)
+    , shadow(new QNeumorphism)
 {
     setToolTip(QString().sprintf("(%d,%d,%d)",color.red(),color.green(),color.blue()));
     setGraphicsEffect(shadow);

@@ -22,8 +22,10 @@ private:
     GradientSlider *colorSlider;
     SpinSlider *pos;
     QVBoxLayout* layout;
+    bool ignorePosSingal;
 signals:
    void currentChanged(SliderBar*);
+
 };
 
 #endif // COLORSBOX_H

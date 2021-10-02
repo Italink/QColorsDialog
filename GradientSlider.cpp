@@ -1,5 +1,5 @@
 #include "GradientSlider.h"
-#include <Tool/Neumorphism.h>
+#include <QNeumorphism/QNeumorphism.h>
 
 GradientSlider::GradientSlider(QWidget *parent)
     :   Adjuster(parent)
@@ -11,7 +11,6 @@ GradientSlider::GradientSlider(QWidget *parent)
     setChoosedBar(colorList[0]);
     connect(sliderBlock,&SliderBlock::clicked,this,&GradientSlider::addBar);
 }
-
 
 void GradientSlider::setChoosedBar(SliderBar *value)
 {
@@ -26,6 +25,7 @@ void GradientSlider::setChoosedBar(SliderBar *value)
     connect(choosedBar,&SliderBar::posChanged,this,&GradientSlider::funcPosChanged);
     emit currentChanged(choosedBar);
 }
+
 SliderBar *GradientSlider::getChoosedBar() const
 {
     return choosedBar;
@@ -46,6 +46,7 @@ void GradientSlider::addBar(const qreal &p, const QColor &c)
     setChoosedBar(s);
     if(flag)
         this->show();
+    emit colorsChanged();
 }
 
 void GradientSlider::removeBar(SliderBar *b)
@@ -57,10 +58,9 @@ void GradientSlider::removeBar(SliderBar *b)
         setChoosedBar(colorList[0]);
         this->show();
         delete b;
+        emit colorsChanged();
     }
-
 }
-
 
 void GradientSlider::funcPosChanged(qreal q)
 {
@@ -72,6 +72,7 @@ void GradientSlider::setColor(QColor color)
     if(choosedBar->getColor()!=color){
         choosedBar->setColor(QColor::fromRgba(color.rgba()));
         flush();
+        emit colorsChanged();
     }
 }
 
@@ -83,6 +84,7 @@ QVariant GradientSlider::getValue()
     }
     return QVariant::fromValue<QMap<double,QColor>>(colors);
 }
+
 void GradientSlider::setValue(const QVariant &v)
 {
     QMap<double, QColor> colors=v.value<QMap<double, QColor>>();
@@ -144,8 +146,6 @@ SliderBar::SliderBar(const qreal &p, const QColor &c, QWidget *parent)
 
 SliderBar::~SliderBar()
 {
-
-
 }
 
 QColor SliderBar::getColor()
@@ -211,7 +211,6 @@ void SliderBar::paintEvent(QPaintEvent *){
         p.setPoints(5,8,1,15,8,15,19,1,19,1,8);
         painter.drawPolygon(p);
     }
-    //setPos(position);
 }
 
 void SliderBar::mousePressEvent(QMouseEvent *)
@@ -246,7 +245,7 @@ SliderBlock::SliderBlock(QList<SliderBar *> *c, QWidget *parent)
     colorList=c;
     setGeometry(8,5,134,20);
 
-    this->setGraphicsEffect(new Neumorphism);
+    this->setGraphicsEffect(new QNeumorphism);
 }
 
 SliderBlock::~SliderBlock()

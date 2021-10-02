@@ -71,6 +71,7 @@ private:
 signals:
    void currentChanged(SliderBar*);
    void posChanged(qreal);
+   void colorsChanged();
 public slots:
     void addBar(const qreal& p,const QColor& c);
     void removeBar(SliderBar* b);
@@ -79,7 +80,6 @@ public slots:
     void setColor(QColor color);
     virtual QVariant getValue() override;
     virtual void setValue(const QVariant &value) override;
-
     QString toString();
     bool fromString(const QString&s);
 

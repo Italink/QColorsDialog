@@ -3,7 +3,7 @@
 
 #include <QMouseEvent>
 #include <QWidget>
-#include <QDebug>
+
 class LSlider : public QWidget
 {
     Q_OBJECT

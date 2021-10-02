@@ -1,13 +1,13 @@
-#ifndef AEROWIDGET_H
-#define AEROWIDGET_H
+#ifndef AERODIALOG_H
+#define AERODIALOG_H
 
-#include <QWidget>
-#include <windows.h>        //注意头文件
-#include <windowsx.h>
+#include <QDialog>
+#include <windows.h>        //娉ㄦ剰澶存枃浠#include <windowsx.h>
 #include <QMouseEvent>
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QPushButton>
+
 
 class CloseButton : public QWidget
 {
@@ -20,37 +20,26 @@ protected:
     virtual void enterEvent(QEvent *event) override;
     virtual void leaveEvent(QEvent *event) override;
     virtual void paintEvent(QPaintEvent *event)override;
-private:
+protected:
     bool enter;
 signals:
     void pressed();
 };
 
-class MaximizeButton : public QWidget
+class MaximizeButton : public CloseButton
 {
     Q_OBJECT
-public:
-    MaximizeButton(QWidget *parent = 0);
-    ~MaximizeButton();
 protected:
-    virtual void mousePressEvent(QMouseEvent *e)override;
-    virtual void enterEvent(QEvent *event) override;
-    virtual void leaveEvent(QEvent *event) override;
     virtual void paintEvent(QPaintEvent *event)override;
 private:
-    bool enter;
-signals:
-    void pressed();
 };
 
 
-class AeroWidget : public QWidget
+class AeroDialog : public QDialog
 {
     Q_OBJECT
 public:
-    AeroWidget(const QString& title,QWidget *parent = 0);
-    AeroWidget(QWidget *parent = 0);
-    ~AeroWidget();
+    AeroDialog(const QString& title,QWidget *parent = 0);
     QVBoxLayout vLayout;
 protected:
     virtual bool nativeEvent(const QByteArray &eventType, void *message, long *result) override;
@@ -58,12 +47,9 @@ protected:
     virtual void mouseMoveEvent(QMouseEvent *e)override;
     virtual void mouseReleaseEvent(QMouseEvent *event)override;
     virtual void paintEvent(QPaintEvent *event)override;
+private:
     int boundaryWidth;
     QPoint clickPos;
-private:
-
-
-    // QWidget interface
 protected:
     virtual void showEvent(QShowEvent *event) override;
 };

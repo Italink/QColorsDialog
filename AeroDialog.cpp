@@ -1,5 +1,5 @@
-﻿#include "AeroWidget.h"
-#include "Neumorphism.h"
+#include "AeroDialog.h"
+#include "QNeumorphism/QNeumorphism.h"
 #include <QPainter>
 #include <QDebug>
 #include <QApplication>
@@ -65,22 +65,23 @@ SetWindowCompositionAttribute(
 typedef BOOL(WINAPI*pfnSetWindowCompositionAttribute)(HWND, WINDOWCOMPOSITIONATTRIBDATA*);
 
 
-AeroWidget::AeroWidget(const QString &title, QWidget *parent)
-    : QWidget(parent)
+AeroDialog::AeroDialog(const QString &title, QWidget *parent)
+    : QDialog(parent)
     , vLayout(this)
     , boundaryWidth(5)
 {
     QLabel *headerBar=new QLabel(title);
     headerBar->setMargin(4);
     QFont font=qApp->font();
+    font.setFamily("微软雅黑");
     font.setPixelSize(15);
     headerBar->setFont(font);
     CloseButton* btClose=new CloseButton();
     MaximizeButton* btMaximizeSize=new  MaximizeButton();
-
     QHBoxLayout *h=new QHBoxLayout();
+
     h->addWidget(headerBar);
-    h->addWidget( btMaximizeSize);
+    h->addWidget(btMaximizeSize);
     h->addWidget(btClose);
 
     setMinimumSize(100,100);
@@ -118,37 +119,8 @@ AeroWidget::AeroWidget(const QString &title, QWidget *parent)
     });
 }
 
-AeroWidget::AeroWidget(QWidget *parent)
-    : QWidget(parent)
-    , boundaryWidth(5)
-{
-    vLayout.setAlignment(Qt::AlignTop);
-    vLayout.setMargin(0);
-    vLayout.setSpacing(0);
-    setWindowFlags(Qt::FramelessWindowHint);
-    setAttribute(Qt::WA_TranslucentBackground);
-    HWND hWnd = HWND(winId());
-    HMODULE hUser = GetModuleHandle(L"user32.dll");
-    if (hUser)
-    {
-        pfnSetWindowCompositionAttribute setWindowCompositionAttribute = (pfnSetWindowCompositionAttribute)GetProcAddress(hUser, "SetWindowCompositionAttribute");
-        if (setWindowCompositionAttribute)
-        {
-            ACCENT_POLICY accent = { ACCENT_ENABLE_BLURBEHIND, 0, 0, 0 };
-            WINDOWCOMPOSITIONATTRIBDATA data;
-            data.Attrib = WCA_ACCENT_POLICY;
-            data.pvData = &accent;
-            data.cbData = sizeof(accent);
-            setWindowCompositionAttribute(hWnd, &data);
-        }
-    }
-}
 
-AeroWidget::~AeroWidget()
-{
-}
-
-bool AeroWidget::nativeEvent(const QByteArray &eventType, void *message, long *result)
+bool AeroDialog::nativeEvent(const QByteArray &eventType, void *message, long *result)
 {
     MSG* msg = (MSG*)message;
     switch(msg->message)
@@ -180,23 +152,23 @@ bool AeroWidget::nativeEvent(const QByteArray &eventType, void *message, long *r
         return false;         //此处返回false，留给其他事件处理器处理
 }
 
-void AeroWidget::mousePressEvent(QMouseEvent *e)
+void AeroDialog::mousePressEvent(QMouseEvent *e)
 {
     if(e->button()==Qt::LeftButton&&!isFullScreen())
         clickPos=e->pos();
 }
-void AeroWidget::mouseMoveEvent(QMouseEvent *e)
+void AeroDialog::mouseMoveEvent(QMouseEvent *e)
 {
-    if(e->buttons()&Qt::LeftButton&&!clickPos.isNull()&&!isFullScreen())
+    if(e->buttons()&Qt::LeftButton&&!clickPos.isNull()&&!isFullScreen()&&e->y())
         move(e->pos()+pos()-clickPos);
 }
 
-void AeroWidget::mouseReleaseEvent(QMouseEvent *)
+void AeroDialog::mouseReleaseEvent(QMouseEvent *)
 {
     clickPos={0,0};
 }
 
-void AeroWidget::paintEvent(QPaintEvent *)
+void AeroDialog::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     painter.setPen(QColor(0,0,0,80));
@@ -204,7 +176,7 @@ void AeroWidget::paintEvent(QPaintEvent *)
     painter.drawRect(rect().adjusted(1,1,-1,-1));
 }
 
-void AeroWidget::showEvent(QShowEvent *)
+void AeroDialog::showEvent(QShowEvent *)
 {
     clickPos={0,0};
 }
@@ -214,7 +186,7 @@ CloseButton::CloseButton(QWidget *parent)
     ,enter(false)
 {
     setFixedSize(30,30);
-    setGraphicsEffect(new Neumorphism);
+    setGraphicsEffect(new QNeumorphism);
 }
 
 CloseButton::~CloseButton()
@@ -256,36 +228,6 @@ void CloseButton::paintEvent(QPaintEvent *)
     painter.drawLine(re.topLeft(),re.bottomRight());
 }
 
-MaximizeButton::MaximizeButton(QWidget *parent)
-    :QWidget(parent)
-    ,enter(false)
-{
-    setFixedSize(30,30);
-    setGraphicsEffect(new Neumorphism);
-}
-
-
-MaximizeButton::~MaximizeButton()
-{
-
-}
-
-void MaximizeButton::mousePressEvent(QMouseEvent *e)
-{
-    emit pressed();
-}
-
-void MaximizeButton::enterEvent(QEvent *)
-{
-    enter=true;
-    update();
-}
-
-void MaximizeButton::leaveEvent(QEvent *)
-{
-    enter=false;
-    update();
-}
 
 void MaximizeButton::paintEvent(QPaintEvent *)
 {

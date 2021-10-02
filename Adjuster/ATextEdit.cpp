@@ -1,6 +1,6 @@
 #include "ATextEdit.h"
 #include <QHBoxLayout>
-#include <Tool/Neumorphism.h>
+#include <QNeumorphism/QNeumorphism.h>
 
 
 TextEdit::TextEdit(const QString &def)
@@ -9,7 +9,7 @@ TextEdit::TextEdit(const QString &def)
     QHBoxLayout *h=new QHBoxLayout(this);
     h->setMargin(0);
     h->addWidget(textEdit);
-    textEdit->setGraphicsEffect(new Neumorphism);
+    textEdit->setGraphicsEffect(new QNeumorphism);
     textEdit->setText(def);
     connect(textEdit,&QLineEdit::textChanged,this,[this](){
         emit valueChange(getValue());

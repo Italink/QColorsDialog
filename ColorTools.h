@@ -10,16 +10,16 @@ class ColorTools : public QWidget
     Q_OBJECT
 public:
     explicit ColorTools(QWidget *parent = nullptr);
+    void addRecentColor(QColor color);
 private:
     void createUI();
     void createColor();
     void handleColor(QColor color);
-    QList<ColorBlock*> recentColor;
     QList<ColorBlock*> colors;
-
+    QList<ColorBlock*> recentColorBlock;
+    static QList<QColor> recentColors;
 signals:
     void colorChanged(QColor);
-
 public slots:
 };
 

@@ -1,4 +1,4 @@
-﻿#include "ColorPanel.h"
+#include "ColorPanel.h"
 
 
 #include <QLabel>
@@ -18,6 +18,7 @@ ColorPanel::ColorPanel(QWidget *parent)
     , alpha("Alpha",new SpinSlider(0,0,255))
     , binary("Hex",new TextEdit(""))
     , btPicker(":/Resource/pen.png")
+    , ignoreSignal(false)
 {
     createUI();
     connectUI();
@@ -63,8 +64,6 @@ void ColorPanel::createUI()
     right->addWidget(&GS);
     right->addWidget(&BL);
     right->addWidget(&alpha);
-
-
 }
 
 void ColorPanel::connectUI(){
@@ -105,8 +104,8 @@ void ColorPanel::flushHSL(QVariant)
     QString greenStr = QString("%1").arg(color.green(),2,16,QChar('0')).toUpper();
     QString blueStr = QString("%1").arg(color.blue(),2,16,QChar('0')).toUpper();
     binary.adjuster->setValue("#"+redStr+greenStr+blueStr);
-    emit colorChanged(color);
-
+    if(!ignoreSignal)
+        emit colorChanged(color);
 }
 
 void ColorPanel::setHS(QPoint HS)
@@ -118,6 +117,7 @@ void ColorPanel::setHS(QPoint HS)
 void ColorPanel::setL(int L)
 {
     BL.adjuster->setValue(L);
+
 }
 
 void ColorPanel::setColorFromString()
@@ -125,15 +125,18 @@ void ColorPanel::setColorFromString()
    QString str=binary.adjuster->getValue().toString();
    if(!str.startsWith("#"))
        str.push_front("#");
-
+   ignoreSignal=true;
    RH.adjuster->setValue(str.mid(1,2).toInt(nullptr,16));
    GS.adjuster->setValue(str.mid(3,2).toInt(nullptr,16));
    BL.adjuster->setValue(str.mid(5,2).toInt(nullptr,16));
+   ignoreSignal=false;
+   emit colorChanged(colorCmp.getNow());
 }
 
 void ColorPanel::setColor(QColor color)
 {
-    colorCmp.setPre(color);
+    ignoreSignal=true;
+    colorCmp.setPre(colorCmp.getNow());
     colorCmp.setNow(color);
     if(mode.adjuster->getValue().toInt()){
         RH.adjuster->setValue(color.hslHue());
@@ -145,6 +148,8 @@ void ColorPanel::setColor(QColor color)
         BL.adjuster->setValue(color.blue());
     }
     alpha.adjuster->setValue(color.alpha());
+    ignoreSignal=false;
+    emit colorChanged(colorCmp.getNow());
 }
 
 void ColorPanel::changeMode(QVariant mode)

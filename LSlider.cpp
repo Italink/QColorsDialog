@@ -1,18 +1,13 @@
 #include "LSlider.h"
-
 #include <QPainter>
-
-#include <Tool/Neumorphism.h>
-
+#include <QNeumorphism/QNeumorphism.h>
 
 LSlider::LSlider(QWidget *parent)
     : QWidget(parent)
     , L(127)
 {
     setFixedSize(30,210);
-
-    setGraphicsEffect(new Neumorphism);
-
+    setGraphicsEffect(new QNeumorphism);
 }
 
 QPoint LSlider::getHS() const

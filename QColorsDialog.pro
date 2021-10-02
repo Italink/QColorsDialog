@@ -16,21 +16,20 @@ SOURCES += \
     Adjuster/IAdjuster.cpp \
     Adjuster/MyComboBox.cpp \
     Adjuster/SpinButton.cpp \
+    AeroDialog.cpp \
     ColorBlock.cpp \
     ColorCompare.cpp \
     ColorPanel.cpp \
     ColorPickor.cpp \
     ColorTools.cpp \
-    Colorist.cpp \
     ColorsBox.cpp \
     GradientSlider.cpp \
     HSPanel.cpp \
     LSlider.cpp \
     PickerIcon.cpp \
-    Tool/AeroWidget.cpp \
-    Tool/Neumorphism.cpp \
+    QColorsDialog.cpp \
+    QNeumorphism/QNeumorphism.cpp \
     main.cpp
-
 
 HEADERS += \
     Adjuster/AComboBox.h \
@@ -40,21 +39,20 @@ HEADERS += \
     Adjuster/IAdjuster.h \
     Adjuster/MyComboBox.h \
     Adjuster/SpinButton.h \
+    AeroDialog.h \
     ColorBlock.h \
     ColorCompare.h \
     ColorPanel.h \
     ColorPickor.h \
     ColorTools.h \
-    Colorist.h \
     ColorsBox.h \
     GradientSlider.h \
     HSPanel.h \
     LSlider.h \
     PickerIcon.h \
-    Tool/AeroWidget.h \
-    Tool/Neumorphism.h \
-    Tool/pixmap_fiter.h
-
+    QColorsDialog.h \
+    QNeumorphism/QNeumorphism.h \
+    QNeumorphism/QPixmapFilter.h
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin

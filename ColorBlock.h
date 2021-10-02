@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QPropertyAnimation>
 #include <QGraphicsDropShadowEffect>
-#include <Tool/Neumorphism.h>
+#include <QNeumorphism/QNeumorphism.h>
 class ColorBlock : public QWidget
 {
     Q_OBJECT
@@ -12,7 +12,7 @@ public:
     explicit ColorBlock(QColor color,QWidget *parent = nullptr);
     QColor color;
     QPropertyAnimation animation;
-    Neumorphism *shadow;
+    QNeumorphism *shadow;
      void setColor(const QColor &value);
 protected:
     void mousePressEvent(QMouseEvent *e);

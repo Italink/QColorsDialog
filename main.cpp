@@ -1,12 +1,14 @@
-﻿#include "Colorist.h"
+#include "QColorsDialog.h"
 
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Colorist::openColorPalette([](QColors colors){
+    QColorsDialog colorsDialog;
+    QObject::connect(&colorsDialog,&QColorsDialog::currentColorChanged,&a,[](QColors colors){
         qDebug()<<colors;
-    },{{0.3,Qt::red},{0.5,Qt::green},{0.8,Qt::blue}});
+    });
+    colorsDialog.exec();
     return a.exec();
 }
