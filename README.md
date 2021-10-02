@@ -1,3 +1,15 @@
-### QColorist
-这是笔者在早期学习过程中花大气力制作的一个调色器面板，支持渐变调色，RGB，HSL模式，屏幕取色器等。
-笔者当时刚开始学习Qt，其中大部分代码比较烂，至少目前还是能用的=.=，该程序应用在个人项目之中，笔者将它从项目中剔除出来，很多地方可能有点莫名其妙，但如果想用的话，只需要查看Colorist的代码即可。
+## QColorsDialog
+这是笔者在早期学习过程中花大气力制作的一个调色器面板，支持渐变调色、RGB、HSL、屏幕取色器。
+
+## 界面效果
+![](./Resource/QColorsDialog.png)
+
+## 使用方法
+与**QColorDialog**用法相似，**QColors**原型是**QMap<double,QColor>**：
+```
+    QColorsDialog colorsDialog;
+    QObject::connect(&colorsDialog,&QColorsDialog::currentColorChanged,&receiver,[](QColors colors){
+        qDebug()<<colors;
+    });
+    colorsDialog.exec();
+```
