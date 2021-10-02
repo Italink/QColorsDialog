@@ -34,7 +34,6 @@ protected:
 private:
 };
 
-
 class AeroDialog : public QDialog
 {
     Q_OBJECT

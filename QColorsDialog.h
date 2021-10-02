@@ -1,13 +1,13 @@
 #ifndef QCOLORSDIALOG_H
 #define QCOLORSDIALOG_H
 
-#include "ColorPanel.h"
-#include "ColorsBox.h"
-#include "ColorTools.h"
 #include "AeroDialog.h"
-#include "Adjuster/IAdjuster.h"
 
 typedef QMap<double,QColor> QColors;
+
+class ColorPanel;
+class ColorTools;
+class ColorsBox;
 
 class QColorsDialog : public AeroDialog
 {
@@ -15,9 +15,9 @@ class QColorsDialog : public AeroDialog
 public:
     QColorsDialog(QMap<double,QColor> defaultColors={{0.5,QColor(0,100,200)}}, QWidget *parent = 0);
 private:
-    ColorPanel colorPanel;
-    ColorTools colorTools;
-    ColorsBox colorBox;
+    ColorPanel* colorPanel;
+    ColorTools* colorTools;
+    ColorsBox* colorBox;
 private:
     void createUI();
     void connectUI();

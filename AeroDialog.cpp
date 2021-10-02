@@ -159,7 +159,7 @@ void AeroDialog::mousePressEvent(QMouseEvent *e)
 }
 void AeroDialog::mouseMoveEvent(QMouseEvent *e)
 {
-    if(e->buttons()&Qt::LeftButton&&!clickPos.isNull()&&!isFullScreen()&&e->y())
+    if(e->buttons()&Qt::LeftButton&&!clickPos.isNull()&&!isFullScreen()&&e->y()<30)
         move(e->pos()+pos()-clickPos);
 }
 
